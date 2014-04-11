@@ -12,6 +12,7 @@ To run:
 ```
 
 Purpose of each file:
+
 | File | Purpose |
 |------|---------|
 | constants.py | holds constants and pygame variables |
