@@ -26,11 +26,11 @@ class Boom:
 
   def run(self, parent):
     if self.state > 0:
-        for i in range(1,self.cap):
-          self.render((i,i+2), (i,1+(i*2)), self)
-        self.state += 1
-        if self.state > self.cap:
-          parent.boom_ptr += 1
+      for i in range(1,self.cap):
+        self.render((i,i+2), (i,1+(i*2)), self)
+      self.state += 1
+      if self.state > self.cap:
+        parent.boom_ptr += 1
 
 class Food:
   def __init__(self):
