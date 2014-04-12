@@ -14,8 +14,8 @@ class Snake:
   def __init__(self):
     self.score = 0
     self.background_color = (0,0,0)
-    self.x = constants.RESOLUTION[0] / 2
-    self.y = constants.RESOLUTION[1] / 2
+    self.x = (constants.RESOLUTION[0] / constants.SCALE) / 2
+    self.y = (constants.RESOLUTION[1] / constants.SCALE) / 2
     self.d = functions.rand(4)
     self.pieces = []
     self.colors = []
