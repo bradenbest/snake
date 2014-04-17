@@ -25,11 +25,17 @@ class Snake:
     self.d = rand(4)
     self.pieces = []
     self.colors = []
+    pygame.mixer.music.load("sound/music.wav")
     
     for i in range(10):
       self.pieces.append(SnakePiece())
       self.colors.append(random_color())
     self.food = Food()
+
+  def music(self):
+    if not pygame.mixer.music.get_busy():
+      pygame.mixer.music.rewind()
+      pygame.mixer.music.play()
 
   def controls(self):
     for evt in pygame.event.get():
@@ -79,6 +85,7 @@ class Snake:
     self.score += 100
 
   def run(self):
+    self.music()
     self.controls()
     pieces = self.pieces
     for i in range(len(pieces)):
@@ -91,6 +98,7 @@ class Snake:
 
   def death(self): # Snake death animation
     cptr = 0
+    pygame.mixer.music.stop()
     pygame.mixer.Sound("sound/death.wav").play()
     # background goes black
     WINDOW.fill((0,0,0))

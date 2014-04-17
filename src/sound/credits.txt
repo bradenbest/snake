@@ -1,0 +1,3 @@
+boom.wav: me
+death.wav: me
+music.wav: Wario Land Stage 1 (http://www.youtube.com/watch?v=7iIYKdXrSag)
