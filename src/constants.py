@@ -5,6 +5,7 @@ if __name__ == "__main__":
   exit()
 
 pygame.init()
+pygame.mixer.init()
 
 RESOLUTION = (800,800)
 WINDOW = pygame.display.set_mode(RESOLUTION,0,32) 

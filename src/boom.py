@@ -18,6 +18,7 @@ class Boom:
       (  0,  0,200),
       (200,  0,200)
     )
+    self.boom_snd = pygame.mixer.Sound("sound/boom.wav")
 
   def render(self, rng, s_mod, parent):
     if parent.state >= rng[0] and parent.state <= rng[1]:
@@ -29,6 +30,8 @@ class Boom:
 
   def run(self, parent):
     if self.state > 0:
+      if self.state == 1:
+        self.boom_snd.play()
       for i in range(1,self.cap):
         self.render((i,i+2), (i,1+(i*2)), self)
       self.state += 1

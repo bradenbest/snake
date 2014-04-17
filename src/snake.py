@@ -91,6 +91,7 @@ class Snake:
 
   def death(self): # Snake death animation
     cptr = 0
+    pygame.mixer.Sound("sound/death.wav").play()
     # background goes black
     WINDOW.fill((0,0,0))
     self.render()
