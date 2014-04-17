@@ -33,13 +33,13 @@ class Snake:
     for evt in pygame.event.get():
       if evt.type == pygame.KEYDOWN or evt.type == 2:
         key = evt.key
-        if   key == pygame.K_UP and self.d != 2:
+        if   key == pygame.K_UP and self.d != 2 and self.pieces[1].y != self.pieces[0].y - 1:    # Key is up,    direction is not down,  and the piece immediately after the head isn't directly above
           self.d = 0
-        elif key == pygame.K_RIGHT and self.d != 3:
+        elif key == pygame.K_RIGHT and self.d != 3 and self.pieces[1].x != self.pieces[0].x + 1: # Key is right, direction is not left,  and the piece immediately after the head isn't directly to the right
           self.d = 1
-        elif key == pygame.K_DOWN and self.d != 0:
+        elif key == pygame.K_DOWN and self.d != 0 and self.pieces[1].y != self.pieces[0].y + 1:  # Key is down,  direction is not up,    and the piece immediately after the head isn't directly below
           self.d = 2
-        elif key == pygame.K_LEFT and self.d != 1:
+        elif key == pygame.K_LEFT and self.d != 1 and self.pieces[1].x != self.pieces[0].x - 1:  # Key is left,  direction is not right, and the piece immediately after the head isn't directly to the left
           self.d = 3
 
   def move(self):
