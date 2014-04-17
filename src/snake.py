@@ -3,10 +3,12 @@ if __name__ == "__main__":
   exit()
 
 from sys import exit
+from time import sleep
 
 from food import Food
 from functions import *
 from constants import *
+from boom import Boom
 
 class SnakePiece:
   def __init__(self):
@@ -17,7 +19,7 @@ class SnakePiece:
 class Snake:
   def __init__(self):
     self.score = 0
-    self.background_color = (0,0,0)
+    self.background_color = (0x33,0x33,0x33)
     self.x = (RESOLUTION[0] / SCALE) / 2
     self.y = (RESOLUTION[1] / SCALE) / 2
     self.d = rand(4)
@@ -82,9 +84,42 @@ class Snake:
     for i in range(len(pieces)):
       if i != 0:
         if collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
-          print("Game Over\nScore: %i" % self.score)
-          pygame.quit()
-          exit()
+          self.death()
     self.move()
     self.food.run(self)
     self.render()
+
+  def death(self): # Snake death animation
+    cptr = 0
+    # background goes black
+    WINDOW.fill((0,0,0))
+    self.render()
+    pygame.display.update()
+    # dramatic pause
+    sleep(1.5)
+    # each piece disappears
+    for p in self.pieces:
+      p.active = 0
+      WINDOW.fill((0,0,0))
+      self.render()
+      pygame.display.update()
+      sleep(FPS / 2)
+      cptr += 1
+    sleep(0.4)
+    # BOOM!
+    boom = Boom(self.pieces[-1].x, self.pieces[-1].y)
+    boom.state = 1
+    boom.cap = 100
+    for i in range(boom.cap):
+      WINDOW.fill((0,0,0))
+      boom.run(self)
+      pygame.display.update()
+      sleep(FPS / 2)
+    # Clear screen
+    WINDOW.fill((0,0,0))
+    pygame.display.update()
+      
+    # game over
+    print("Game Over\nScore: %i" % self.score)
+    pygame.quit()
+    exit()
