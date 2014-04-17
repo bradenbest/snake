@@ -1,8 +1,12 @@
-import sys
+if __name__ == "__main__":
+  print("This is not supposed to be run directly. To run the game, run python with main.py")
+  exit()
 
-import food
-import functions
-import constants
+from sys import exit
+
+from food import Food
+from functions import *
+from constants import *
 
 class SnakePiece:
   def __init__(self):
@@ -14,28 +18,28 @@ class Snake:
   def __init__(self):
     self.score = 0
     self.background_color = (0,0,0)
-    self.x = (constants.RESOLUTION[0] / constants.SCALE) / 2
-    self.y = (constants.RESOLUTION[1] / constants.SCALE) / 2
-    self.d = functions.rand(4)
+    self.x = (RESOLUTION[0] / SCALE) / 2
+    self.y = (RESOLUTION[1] / SCALE) / 2
+    self.d = rand(4)
     self.pieces = []
     self.colors = []
     
     for i in range(10):
       self.pieces.append(SnakePiece())
-      self.colors.append(functions.random_color())
-    self.food = food.Food()
+      self.colors.append(random_color())
+    self.food = Food()
 
   def controls(self):
-    for evt in constants.pygame.event.get():
-      if evt.type == constants.pygame.KEYDOWN or evt.type == 2:
+    for evt in pygame.event.get():
+      if evt.type == pygame.KEYDOWN or evt.type == 2:
         key = evt.key
-        if   key == constants.pygame.K_UP and self.d != 2:
+        if   key == pygame.K_UP and self.d != 2:
           self.d = 0
-        elif key == constants.pygame.K_RIGHT and self.d != 3:
+        elif key == pygame.K_RIGHT and self.d != 3:
           self.d = 1
-        elif key == constants.pygame.K_DOWN and self.d != 0:
+        elif key == pygame.K_DOWN and self.d != 0:
           self.d = 2
-        elif key == constants.pygame.K_LEFT and self.d != 1:
+        elif key == pygame.K_LEFT and self.d != 1:
           self.d = 3
 
   def move(self):
@@ -48,8 +52,8 @@ class Snake:
     elif self.d == 3:
       self.x -= 1
 
-    self.x = self.x % (constants.RESOLUTION[0] / constants.SCALE)
-    self.y = self.y % (constants.RESOLUTION[1] / constants.SCALE)
+    self.x = self.x % (RESOLUTION[0] / SCALE)
+    self.y = self.y % (RESOLUTION[1] / SCALE)
     tail = self.pieces.pop()
     tail.x = self.x
     tail.y = self.y
@@ -62,14 +66,14 @@ class Snake:
     cptr = 0
     for p in self.pieces:
       if p.active:
-        constants.pygame.draw.rect(constants.WINDOW, self.colors[cptr], (p.x * constants.SCALE, p.y * constants.SCALE, constants.SCALE-constants.PADDING, constants.SCALE-constants.PADDING))
+        pygame.draw.rect(WINDOW, self.colors[cptr], (p.x * SCALE, p.y * SCALE, SCALE-PADDING, SCALE-PADDING))
       cptr += 1
 
   def grow(self):
     for i in range(5):
       self.pieces.append(SnakePiece())
-      self.colors.append(functions.random_color())
-    self.background_color = (functions.rand(0x44),functions.rand(0x44),functions.rand(0x44)) # dark background
+      self.colors.append(random_color())
+    self.background_color = (rand(0x44),rand(0x44),rand(0x44)) # dark background
     self.score += 100
 
   def run(self):
@@ -77,10 +81,10 @@ class Snake:
     pieces = self.pieces
     for i in range(len(pieces)):
       if i != 0:
-        if functions.collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
+        if collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
           print("Game Over\nScore: %i" % self.score)
-          constants.pygame.quit()
-          sys.exit()
+          pygame.quit()
+          exit()
     self.move()
     self.food.run(self)
     self.render()

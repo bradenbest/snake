@@ -1,5 +1,9 @@
-import functions
-import constants
+if __name__ == "__main__":
+  print("This is not supposed to be run directly. To run the game, run python with main.py")
+  exit()
+
+from functions import *
+from constants import *
 
 class Boom: 
   def __init__(self, x, y):
@@ -18,10 +22,10 @@ class Boom:
 
   def render(self, rng, s_mod, parent):
     if parent.state >= rng[0] and parent.state <= rng[1]:
-      constants.pygame.draw.rect(constants.WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * constants.SCALE, (parent.y-s_mod[0]) * constants.SCALE, s_mod[1] * constants.SCALE, constants.SCALE)) # Top
-      constants.pygame.draw.rect(constants.WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * constants.SCALE, (parent.y+s_mod[0]) * constants.SCALE, s_mod[1] * constants.SCALE, constants.SCALE)) # Bottom
-      constants.pygame.draw.rect(constants.WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * constants.SCALE, (parent.y-s_mod[0]) * constants.SCALE, constants.SCALE, s_mod[1] * constants.SCALE)) # Left
-      constants.pygame.draw.rect(constants.WINDOW, parent.colors[rng[0] % 6], ((parent.x+s_mod[0]) * constants.SCALE, (parent.y-s_mod[0]) * constants.SCALE, constants.SCALE, s_mod[1] * constants.SCALE)) # Right
+      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Top
+      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y+s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Bottom
+      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Left
+      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x+s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Right
     
 
   def run(self, parent):
@@ -42,18 +46,19 @@ class Food:
     self.booms.append(Boom(self.x, self.y))
 
   def move(self):
-    self.x = functions.rand(constants.RESOLUTION[0] / constants.SCALE)
-    self.y = functions.rand(constants.RESOLUTION[1] / constants.SCALE)
-    self.c = functions.random_color()
+    self.x = rand(RESOLUTION[0] / SCALE)
+    self.y = rand(RESOLUTION[1] / SCALE)
+    self.c = random_color()
     self.booms.append(Boom(self.x, self.y))
     self.booms[self.boom_ptr].state = 1
     
   def render(self):
-    constants.pygame.draw.rect(constants.WINDOW, self.c, (self.x * constants.SCALE, self.y * constants.SCALE, constants.SCALE-constants.PADDING, constants.SCALE-constants.PADDING))
+    pygame.draw.rect(WINDOW, self.c, (self.x * SCALE, self.y * SCALE, SCALE-PADDING, SCALE-PADDING))
 
   def run(self, parent):
-    if functions.collision(self,parent):
+    if collision(self,parent):
       parent.grow()
       self.move()
     self.render()
     self.booms[self.boom_ptr].run(self)
+

@@ -1,5 +1,9 @@
 import pygame
 
+if __name__ == "__main__":
+  print("This is not supposed to be run directly. To run the game, run python with main.py")
+  exit()
+
 pygame.init()
 
 RESOLUTION = (800,800)
