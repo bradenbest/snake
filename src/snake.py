@@ -107,23 +107,27 @@ class Snake:
     # dramatic pause
     sleep(1.5)
     # each piece disappears
-    for p in self.pieces:
+    #for p in self.pieces:
+    i = len(self.pieces)
+    while i: # Yep, we're going through in reverse
+      i -= 1
+      p = self.pieces[i]
       p.active = 0
       WINDOW.fill((0,0,0))
       self.render()
       pygame.display.update()
-      sleep(FPS / 2)
+      sleep((1.0/FPS) / 2)
       cptr += 1
     sleep(0.4)
     # BOOM!
-    boom = Boom(self.pieces[-1].x, self.pieces[-1].y)
+    boom = Boom(self.pieces[0].x, self.pieces[0].y)
     boom.state = 1
     boom.cap = 100
     for i in range(boom.cap):
       WINDOW.fill((0,0,0))
       boom.run(self)
       pygame.display.update()
-      sleep(FPS / 2)
+      sleep((1.0/FPS) / 2)
     # Clear screen
     WINDOW.fill((0,0,0))
     pygame.display.update()
