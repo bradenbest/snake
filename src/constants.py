@@ -12,3 +12,12 @@ WINDOW = pygame.display.set_mode(RESOLUTION,0,32)
 FPS = 30
 SCALE = 10
 PADDING = 0
+
+SIG_NOOP = 0
+SIG_QUIT = 1
+SIG_RESTART = 2
+
+# Global variables
+
+SIGNAL = SIG_NOOP
+

@@ -84,19 +84,19 @@ class Snake:
     self.background_color = (rand(0x44),rand(0x44),rand(0x44)) # dark background
     self.score += 100
 
-  def run(self):
+  def run(self, signal):
     self.music()
     self.controls()
     pieces = self.pieces
     for i in range(len(pieces)):
       if i != 0:
         if collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
-          self.death()
+          self.death(signal)
     self.move()
     self.food.run(self)
     self.render()
 
-  def death(self): # Snake death animation
+  def death(self, signal): # Snake death animation
     cptr = 0
     pygame.mixer.music.stop()
     pygame.mixer.Sound("sound/death.wav").play()
@@ -107,7 +107,7 @@ class Snake:
     # dramatic pause
     sleep(1.5)
     # each piece disappears
-    #for p in self.pieces:
+    clock = pygame.time.Clock()
     i = len(self.pieces)
     while i: # Yep, we're going through in reverse
       i -= 1
@@ -116,7 +116,8 @@ class Snake:
       WINDOW.fill((0,0,0))
       self.render()
       pygame.display.update()
-      sleep((1.0/FPS) / 2)
+      pygame.mixer.Sound("sound/noise_short_2.wav").play()
+      clock.tick(i * 2)
       cptr += 1
     sleep(0.4)
     # BOOM!
@@ -133,6 +134,28 @@ class Snake:
     pygame.display.update()
       
     # game over
-    print("Game Over\nScore: %i" % self.score)
-    pygame.quit()
-    exit()
+    #print("Game Over\nScore: %i" % self.score)
+    font = pygame.font.Font(None,80)
+    font2 = pygame.font.Font(None,60)
+    font3 = pygame.font.Font(None,40)
+    txt = (
+      font.render("G A M E   O V E R",1,(255,255,255)),
+      font2.render("Score: %i" % self.score, 1, (255,255,255)),
+      font3.render("Press 'q' to quit", 1, (0xaa, 0xaa, 0xaa)),
+      font3.render("Press 'r' to restart", 1, (0xaa, 0xaa, 0xaa))
+    )
+    WINDOW.blit(txt[0],(RESOLUTION[0]/2 - font.size("G A M E   O V E R")[0]/2,RESOLUTION[1]/8))
+    WINDOW.blit(txt[1],(RESOLUTION[0]/2 - font2.size("Score: %i" % self.score)[0]/2,(RESOLUTION[1]/8) * 2))
+    WINDOW.blit(txt[2],(RESOLUTION[0]/2 - font3.size("Press 'q' to quit")[0]/2,(RESOLUTION[1]/16) * 15))
+    WINDOW.blit(txt[3],(RESOLUTION[0]/2 - font3.size("Press 'r' to restart")[0]/2,(RESOLUTION[1]/16) * 14))
+    pygame.display.update()
+    signal[0] = SIG_NOOP
+    while 1:
+      for e in pygame.event.get():
+        if e.type == pygame.KEYDOWN:
+          if e.key == pygame.K_q:
+            signal[0] = SIG_QUIT
+          elif e.key == pygame.K_r:
+            signal[0] = SIG_RESTART
+      if signal[0]:
+        break
