@@ -9,7 +9,7 @@ class Boom:
     self.x = x
     self.y = y
     self.cap = 20
-    self.state = 0
+    self.state = 1
     self.colors = (
       (200,  0,  0),
       (200,200,  0),
@@ -20,20 +20,22 @@ class Boom:
     )
     self.boom_snd = pygame.mixer.Sound("sound/boom.wav")
 
-  def render(self, rng, s_mod, parent):
-    if parent.state >= rng[0] and parent.state <= rng[1]:
-      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Top
-      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y+s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Bottom
-      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x-s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Left
-      pygame.draw.rect(WINDOW, parent.colors[rng[0] % 6], ((parent.x+s_mod[0]) * SCALE, (parent.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Right
+  def render(self, rng, s_mod): 
+    # rng = range, it is how many rings of the explosion are visible at one time
+    # s_mod = size modifier. it determines the visual progress of the blast
+    if self.state >= rng[0] and self.state <= rng[1]:
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE, (self.y-s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Top
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE, (self.y+s_mod[0]) * SCALE, s_mod[1] * SCALE, SCALE)) # Bottom
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE, (self.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Left
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x+s_mod[0]) * SCALE, (self.y-s_mod[0]) * SCALE, SCALE, s_mod[1] * SCALE)) # Right
     
 
-  def run(self, parent):
+  def run(self):
     if self.state > 0:
       if self.state == 1:
         self.boom_snd.play()
       for i in range(1,self.cap):
-        self.render((i,i+2), (i,1+(i*2)), self)
+        self.render((i,i+2), (i,1+(i*2)))
       self.state += 1
-      if self.state > self.cap and hasattr(parent, 'boom_ptr'):
-        parent.boom_ptr += 1
+      if self.state > self.cap:
+        self.state = 0

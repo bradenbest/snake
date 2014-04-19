@@ -30,7 +30,7 @@ class Snake:
     for i in range(10):
       self.pieces.append(SnakePiece())
       self.colors.append(random_color())
-    self.food = Food()
+    self.foods = [Food() for i in range(5)]
 
   def music(self):
     if not pygame.mixer.music.get_busy():
@@ -93,7 +93,8 @@ class Snake:
         if collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
           self.death(signal)
     self.move()
-    self.food.run(self)
+    for food in self.foods:
+      food.run(self)
     self.render()
 
   def death(self, signal): # Snake death animation
@@ -122,11 +123,10 @@ class Snake:
     sleep(0.4)
     # BOOM!
     boom = Boom(self.pieces[0].x, self.pieces[0].y)
-    boom.state = 1
     boom.cap = 100
     for i in range(boom.cap):
       WINDOW.fill((0,0,0))
-      boom.run(self)
+      boom.run()
       pygame.display.update()
       sleep((1.0/FPS) / 2)
     # Clear screen
