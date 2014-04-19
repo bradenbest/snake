@@ -10,7 +10,7 @@ class Food:
   def __init__(self):
     self.x = rand(RESOLUTION[0] / SCALE)
     self.y = rand(RESOLUTION[1] / SCALE)
-    self.c = (0xff, 0xff, 0xff)
+    self.c = random_color()
     self.booms = []
 
   def move(self):
