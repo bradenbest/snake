@@ -1,26 +1,28 @@
-# Python Snake
+# Early development
 
-## Dependencies:
+Each folder represents a version. This is the development that went into the snake game BEFORE the first commit
 
-* Python 3
-* Pygame
+## Changelog 
 
-## To run: 
+* 0.1 
+  * first version, draws a square to test pygame display
 
-```bash
-    $ python3 main.py
-```
+* 0.2 
+  * added Snake class
 
-## Local modules
+* 0.3
+  * snake now moves
+  * added food class
 
-Purpose of each file:
+* 0.4
+  * refactoring
 
-| File | Purpose |
-|------|---------|
-| constants.py | holds constants and pygame variables |
-| food.py      | holds Food class; the game objective |
-| functions.py | holds general functions |
-| main.py      | holds entry point |
-| snake.py     | holds Snake classes and most of the game's logic |
-| boom.py      | holds Boom class; for creating colorful explosions |
+* 0.5
+  * separated project into different files
 
+* 0.6
+  * added keyboard controls
+
+* 0.7 
+  * added collision detection
+  
