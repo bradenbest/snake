@@ -16,8 +16,3 @@ PADDING = 0
 SIG_NOOP = 0
 SIG_QUIT = 1
 SIG_RESTART = 2
-
-# Global variables
-
-SIGNAL = SIG_NOOP
-

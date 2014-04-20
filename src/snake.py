@@ -23,15 +23,11 @@ class Snake:
     self.x = (RESOLUTION[0] / SCALE) / 2
     self.y = (RESOLUTION[1] / SCALE) / 2
     self.d = rand(4)
-    self.pieces = []
-    self.colors = []
+    self.pieces = [SnakePiece() for i in range(10)]
+    self.colors = [random_color() for i in range(10)]
+    self.foods = [Food() for i in range(5)]
     pygame.mixer.music.load("sound/music.wav")
     
-    for i in range(10):
-      self.pieces.append(SnakePiece())
-      self.colors.append(random_color())
-    self.foods = [Food() for i in range(5)]
-
   def music(self):
     if not pygame.mixer.music.get_busy():
       pygame.mixer.music.rewind()
