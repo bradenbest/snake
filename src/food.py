@@ -18,15 +18,15 @@ class Food:
     self.y = rand(RESOLUTION[1] / SCALE)
     self.c = random_color()
     
-  def render(self):
-    pygame.draw.rect(WINDOW, self.c, (self.x * SCALE, self.y * SCALE, SCALE-PADDING, SCALE-PADDING))
+  def render(self,cam):
+    pygame.draw.rect(WINDOW, self.c, ((self.x * SCALE) - int(cam.x), (self.y * SCALE) - int(cam.y), SCALE-PADDING, SCALE-PADDING))
 
   def run(self, parent):
     if collision(self,parent):
       parent.grow()
       self.booms.append(Boom(self.x, self.y))
       self.move()
-    self.render()
+    self.render(parent.cam)
     for b in self.booms:
-      b.run()
+      b.run(parent.cam)
 

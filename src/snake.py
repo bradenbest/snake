@@ -16,6 +16,36 @@ class SnakePiece:
     self.y = 0
     self.active = 0
 
+class Camera:
+  x = 0
+  y = 0
+  state = 0
+  positions = ( # This is the dramatic 'screen shake' animation of the camera
+    (8,-4), # right, up (instense)
+    (0,0),  # neutral
+    (-6,3), # left, down (rough)
+    (0,0),  # neutral
+    (-4,-2),# left, up (less intense)
+    (0,0),  # neutral
+    (2,1),  # right, down (calming down)
+    (0,0),  # neutral
+    (2,-1), # right, up
+    (-2,1), # left, down
+    (0,0),  # neutral
+    (-2,-1),# left, up
+    (2,1),  # right, down
+    (0,0),  # and 4 frames of neutral
+    (0,0),
+    (0,0),
+    (0,0)
+  )
+
+  def shake(self):
+    self.x = int(self.positions[self.state][0])
+    self.y = int(self.positions[self.state][1])
+    self.state += 1
+    self.state = self.state % len(self.positions)
+
 class Snake:
   def __init__(self):
     self.score = 0
@@ -26,6 +56,7 @@ class Snake:
     self.pieces = [SnakePiece() for i in range(10)]
     self.colors = [random_color() for i in range(10)]
     self.foods = [Food() for i in range(5)]
+    self.cam = Camera()
     pygame.mixer.music.load("sound/music.wav")
     
   def music(self):
@@ -70,7 +101,7 @@ class Snake:
     cptr = 0
     for p in self.pieces:
       if p.active:
-        pygame.draw.rect(WINDOW, self.colors[cptr], (p.x * SCALE, p.y * SCALE, SCALE-PADDING, SCALE-PADDING))
+        pygame.draw.rect(WINDOW, self.colors[cptr], ((p.x * SCALE) - int(self.cam.x), (p.y * SCALE) - int(self.cam.y), SCALE-PADDING, SCALE-PADDING))
       cptr += 1
 
   def grow(self):
@@ -122,7 +153,7 @@ class Snake:
     boom.cap = 100
     for i in range(boom.cap):
       WINDOW.fill((0,0,0))
-      boom.run()
+      boom.run(self.cam)
       pygame.display.update()
       sleep((1.0/FPS) / 2)
     # Clear screen
