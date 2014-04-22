@@ -111,6 +111,16 @@ class Snake:
     self.background_color = (rand(0x44),rand(0x44),rand(0x44)) # dark background
     self.score += 100
 
+  def troll(self):
+    if len(self.pieces) > 150:
+      self.cam.x += 4
+      self.cam.y += 2
+    if len(self.pieces) > 100:
+      self.cam.x += 2
+      self.cam.y += 1
+    elif len(self.pieces) > 50:
+      self.cam.x += 1
+
   def run(self, signal):
     self.music()
     self.controls()
@@ -122,10 +132,14 @@ class Snake:
     self.move()
     for food in self.foods:
       food.run(self)
+    if TROLLING_ENABLED:
+      self.troll()
     self.render()
 
   def death(self, signal): # Snake death animation
     cptr = 0
+    self.cam.x = 0
+    self.cam.y = 0
     pygame.mixer.music.stop()
     pygame.mixer.Sound("sound/death.wav").play()
     # background goes black
