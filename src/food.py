@@ -8,18 +8,18 @@ from boom import Boom
 
 class Food:
   def __init__(self):
-    self.x = rand(RESOLUTION[0] / SCALE)
-    self.y = rand(RESOLUTION[1] / SCALE)
+    self.x = rand(GRIDSIZE[0])
+    self.y = rand(GRIDSIZE[1])
     self.c = random_color()
     self.booms = []
 
   def move(self):
-    self.x = rand(RESOLUTION[0] / SCALE)
-    self.y = rand(RESOLUTION[1] / SCALE)
+    self.x = rand(GRIDSIZE[0])
+    self.y = rand(GRIDSIZE[1])
     self.c = random_color()
     
   def render(self,cam):
-    pygame.draw.rect(WINDOW, self.c, ((self.x * SCALE) - int(cam.x), (self.y * SCALE) - int(cam.y), SCALE-PADDING, SCALE-PADDING))
+    pygame.draw.rect(WINDOW, self.c, ((self.x * SCALE) - cam.x, (self.y * SCALE) - cam.y, SCALE-PADDING, SCALE-PADDING))
 
   def run(self, parent):
     if collision(self,parent):

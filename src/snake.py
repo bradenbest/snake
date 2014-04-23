@@ -9,6 +9,7 @@ from food import Food
 from functions import *
 from constants import *
 from boom import Boom
+from camera import Camera
 
 class SnakePiece:
   def __init__(self):
@@ -16,46 +17,18 @@ class SnakePiece:
     self.y = 0
     self.active = 0
 
-class Camera:
-  x = 0
-  y = 0
-  state = 0
-  positions = ( # This is the dramatic 'screen shake' animation of the camera
-    (8,-4), # right, up (instense)
-    (0,0),  # neutral
-    (-6,3), # left, down (rough)
-    (0,0),  # neutral
-    (-4,-2),# left, up (less intense)
-    (0,0),  # neutral
-    (2,1),  # right, down (calming down)
-    (0,0),  # neutral
-    (2,-1), # right, up
-    (-2,1), # left, down
-    (0,0),  # neutral
-    (-2,-1),# left, up
-    (2,1),  # right, down
-    (0,0),  # and 4 frames of neutral
-    (0,0),
-    (0,0),
-    (0,0)
-  )
-
-  def shake(self):
-    self.x = int(self.positions[self.state][0])
-    self.y = int(self.positions[self.state][1])
-    self.state += 1
-    self.state = self.state % len(self.positions)
 
 class Snake:
   def __init__(self):
     self.score = 0
     self.background_color = (0x33,0x33,0x33)
-    self.x = (RESOLUTION[0] / SCALE) / 2
-    self.y = (RESOLUTION[1] / SCALE) / 2
+    self.x = GRIDSIZE[0] / 2
+    self.y = GRIDSIZE[1] / 2
     self.d = rand(4)
     self.pieces = [SnakePiece() for i in range(10)]
     self.colors = [random_color() for i in range(10)]
-    self.foods = [Food() for i in range(5)]
+    self.foods = []
+    self.fstate = 0
     self.cam = Camera()
     pygame.mixer.music.load("sound/music.wav")
     
@@ -87,8 +60,8 @@ class Snake:
     elif self.d == 3:
       self.x -= 1
 
-    self.x = self.x % (RESOLUTION[0] / SCALE)
-    self.y = self.y % (RESOLUTION[1] / SCALE)
+    self.x = self.x % GRIDSIZE[0]
+    self.y = self.y % GRIDSIZE[1]
     tail = self.pieces.pop()
     tail.x = self.x
     tail.y = self.y
@@ -101,7 +74,7 @@ class Snake:
     cptr = 0
     for p in self.pieces:
       if p.active:
-        pygame.draw.rect(WINDOW, self.colors[cptr], ((p.x * SCALE) - int(self.cam.x), (p.y * SCALE) - int(self.cam.y), SCALE-PADDING, SCALE-PADDING))
+        pygame.draw.rect(WINDOW, self.colors[cptr], ((p.x * SCALE) - self.cam.x, (p.y * SCALE) - self.cam.y, SCALE-PADDING, SCALE-PADDING))
       cptr += 1
 
   def grow(self):
@@ -111,7 +84,7 @@ class Snake:
     self.background_color = (rand(0x44),rand(0x44),rand(0x44)) # dark background
     self.score += 100
 
-  def troll(self):
+  def troll(self): # Enables a higher difficulty via unorthodox methods
     if len(self.pieces) > 150:
       self.cam.x += 4
       self.cam.y += 2
@@ -130,6 +103,9 @@ class Snake:
         if collision(pieces[0], pieces[i]) and pieces[0].active and pieces[i].active:
           self.death(signal)
     self.move()
+    if not(self.fstate % (FPS * 5)):
+      self.foods.append(Food())
+    self.fstate += 1
     for food in self.foods:
       food.run(self)
     if TROLLING_ENABLED:
@@ -175,7 +151,6 @@ class Snake:
     pygame.display.update()
       
     # game over
-    #print("Game Over\nScore: %i" % self.score)
     font = pygame.font.Font(None,80)
     font2 = pygame.font.Font(None,60)
     font3 = pygame.font.Font(None,40)

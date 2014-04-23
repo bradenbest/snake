@@ -24,10 +24,10 @@ class Boom:
     # rng = range, it is how many rings of the explosion are visible at one time
     # s_mod = size modifier. it determines the visual progress of the blast
     if self.state >= rng[0] and self.state <= rng[1]:
-      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - int(cam.x), (self.y-s_mod[0]) * SCALE - int(cam.y), s_mod[1] * SCALE, SCALE)) # Top
-      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - int(cam.x), (self.y+s_mod[0]) * SCALE - int(cam.y), s_mod[1] * SCALE, SCALE)) # Bottom
-      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - int(cam.x), (self.y-s_mod[0]) * SCALE - int(cam.y), SCALE, s_mod[1] * SCALE)) # Left
-      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x+s_mod[0]) * SCALE - int(cam.x), (self.y-s_mod[0]) * SCALE - int(cam.y), SCALE, s_mod[1] * SCALE)) # Right
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - cam.x, (self.y-s_mod[0]) * SCALE - cam.y, s_mod[1] * SCALE, SCALE)) # Top
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - cam.x, (self.y+s_mod[0]) * SCALE - cam.y, s_mod[1] * SCALE, SCALE)) # Bottom
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x-s_mod[0]) * SCALE - cam.x, (self.y-s_mod[0]) * SCALE - cam.y, SCALE, s_mod[1] * SCALE)) # Left
+      pygame.draw.rect(WINDOW, self.colors[rng[0] % 6], ((self.x+s_mod[0]) * SCALE - cam.x, (self.y-s_mod[0]) * SCALE - cam.y, SCALE, s_mod[1] * SCALE)) # Right
     
 
   def run(self, cam):
