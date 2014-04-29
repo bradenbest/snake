@@ -15,10 +15,10 @@ PADDING = 0
 #GRIDSIZE = (60,60)
 GRIDSIZE = (int(RAW_RESOLUTION[0] / SCALE), int(RAW_RESOLUTION[1] / SCALE))
 RESOLUTION = (int(GRIDSIZE[0] * SCALE), int(GRIDSIZE[1] * SCALE))
-WINDOW = pygame.display.set_mode(RESOLUTION,0,32) 
+WINDOW = pygame.display.set_mode(RESOLUTION,pygame.FULLSCREEN,32) 
 FPS = 30
 
-pygame.display.toggle_fullscreen()
+#pygame.display.toggle_fullscreen()
 
 SIG_NOOP = 0
 SIG_QUIT = 1
